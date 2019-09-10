@@ -77,14 +77,16 @@ public extension DrawerController {
 
         isDraggingBottomView = false
 
-        if progress > throwPercentageThresfold || abs(velocity.y) > throwVelocityThreshold {
+        let velocity = velocity.y * (isBottomViewOpen ? 1.0 : -1.0)
+
+        if progress > throwPercentageThresfold || velocity > throwVelocityThreshold {
             isBottomViewOpen = !isBottomViewOpen
         }
 
         var frame = isBottomViewOpen ? bottomViewOpenedFrame : bottomViewClosedFrame
 
         let distance = draggingOrigin.y - bottomView.frame.origin.y
-        let springVelocity = max(1 / (abs(velocity.y / distance)), 0.08)
+        let springVelocity = max(1 / (abs(velocity / distance)), 0.08)
 
         delegate?.drawerController?(self, willEndDraggingDrawer: bottomView, withVelocity: springVelocity, targetFrame: &frame)
 
