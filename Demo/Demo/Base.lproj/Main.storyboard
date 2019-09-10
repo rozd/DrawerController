@@ -30,18 +30,19 @@
         <scene sceneID="Kir-UE-EEI">
             <objects>
                 <viewController id="Qou-l7-d7J" customClass="ViewController" customModule="Demo" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" alpha="0.29999999999999999" contentMode="scaleToFill" id="bY5-Y1-8SK">
+                    <view key="view" contentMode="scaleToFill" id="bY5-Y1-8SK">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nku-Zv-6EI">
-                                <rect key="frame" x="184" y="433" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="136.5" y="419.5" width="141" height="33"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <state key="normal" title="Storyboard Button"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="nku-Zv-6EI" firstAttribute="centerY" secondItem="bY5-Y1-8SK" secondAttribute="centerY" id="cON-yL-oYX"/>
+                            <constraint firstItem="nku-Zv-6EI" firstAttribute="centerY" secondItem="bY5-Y1-8SK" secondAttribute="centerY" constant="-12" id="cON-yL-oYX"/>
                             <constraint firstItem="nku-Zv-6EI" firstAttribute="centerX" secondItem="bY5-Y1-8SK" secondAttribute="centerX" id="zpx-I2-fAC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="c81-hp-NMl"/>

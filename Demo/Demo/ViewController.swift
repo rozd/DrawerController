@@ -15,12 +15,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         let button = UIButton()
-        button.setTitle("Test Button", for: .normal)
+        button.setTitle("Button from Code", for: .normal)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
 
         NSLayoutConstraint.activate([
-            button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            button.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: 12.0),
             button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         ])
     }

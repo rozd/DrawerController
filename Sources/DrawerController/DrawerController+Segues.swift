@@ -52,7 +52,6 @@ open class EmbedAtBottomSegue: UIStoryboardSegue {
 
 open class EmbedAsRootSegue: UIStoryboardSegue {
 
-
     open class var identifier: String {
         return "drawerControllerEmbedAsRoot"
     }
