@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  DrawerControllerDelegate.swift
 //  
 //
 //  Created by Max Rozdobudko on 9/9/19.
@@ -23,6 +23,12 @@ public protocol DrawerControllerDelegate: class {
 
     @objc
     optional func drawerController(_ controller: DrawerController, openedFrameForDrawer drawer: UIView) -> CGRect
+
+    @objc
+    optional func drawerController(_ controller: DrawerController, willEndDraggingDrawer drawer: UIView, withVelocity velocity: CGFloat, targetFrame frame: UnsafeMutablePointer<CGRect>)
+
+//    @objc
+//    optional func drawerController(_ controller: DrawerController, finalPosition sides: [UIRectEdge: CGFloat])
 }
 
 #endif

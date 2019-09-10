@@ -4,11 +4,20 @@ import UIKit
 
 open class DrawerController: UIViewController {
 
+    // MARK: - Root View Controller
+
+    open var rootViewController: UIViewController? {
+        didSet {
+            replace(root: oldValue, by: rootViewController)
+        }
+    }
+
     // MARK: - Drawers
 
     open var bottomViewController: UIViewController? {
         didSet {
             replace(bottom: oldValue?.view, by: bottomViewController?.view)
+            setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
         }
     }
 
@@ -50,7 +59,15 @@ open class DrawerController: UIViewController {
 
     var isDraggingBottomView: Bool = false
 
-    // MARK: - Lifecycle
+    // MARK: Preferred Screen Edges
+
+    override open var preferredScreenEdgesDeferringSystemGestures: UIRectEdge {
+        var edges: UIRectEdge = []
+        if bottomViewController != nil {
+            edges.insert(.bottom)
+        }
+        return edges
+    }
 
     // MARK: - View lifecycle
 

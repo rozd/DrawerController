@@ -19,14 +19,14 @@ public extension DrawerController {
         guard let view = bottomView else {
             return .zero
         }
-        return delegate?.drawerController?(self, closedFrameForDrawer: view) ?? .zero
+        return delegate?.drawerController?(self, closedFrameForDrawer: view) ?? self.view.bounds.applying(CGAffineTransform(translationX: 0.0, y: self.view.bounds.height))
     }
 
     var bottomViewOpenedFrame: CGRect {
         guard let view = bottomView else {
             return .zero
         }
-        return delegate?.drawerController?(self, openedFrameForDrawer: view) ?? .zero
+        return delegate?.drawerController?(self, openedFrameForDrawer: view) ?? self.view.bounds
     }
 
     func replace(bottom oldView: UIView?, by newView: UIView?) {
@@ -58,31 +58,13 @@ public extension DrawerController {
         let closedFrame = bottomViewClosedFrame
         let openedFrame = bottomViewOpenedFrame
 
-        let minY = openedFrame.origin.y
-        let maxY = closedFrame.origin.y
-        let rangeY = maxY - minY
-
-        var newY = draggingOrigin.y + translation.y
-        newY = min(maxY, newY)
-        newY = max(minY, newY)
-
-        let progress = newY / rangeY
-
-        var frame: CGRect = .zero
+        let progress = self.progress(forTranslation: translation)
 
         if isBottomViewOpen {
-            frame = CGRect(x: closedFrame.minX + (openedFrame.minX - closedFrame.minX) * progress,
-                           y: closedFrame.minY + (openedFrame.minY - closedFrame.minY) * progress,
-                           width: closedFrame.width + (openedFrame.width - closedFrame.width) * progress,
-                           height: closedFrame.height + (openedFrame.height - closedFrame.height) * progress)
+            bottomView.frame = self.frame(from: openedFrame, to: closedFrame, with: progress)
         } else {
-            frame = CGRect(x: openedFrame.minX + (closedFrame.minX - openedFrame.minX) * progress,
-                           y: openedFrame.minY + (closedFrame.minY - openedFrame.minY) * progress,
-                           width: openedFrame.width + (closedFrame.width - openedFrame.width) * progress,
-                           height: openedFrame.height + (closedFrame.height - openedFrame.height) * progress)
+            bottomView.frame = self.frame(from: closedFrame, to: openedFrame, with: progress)
         }
-
-        bottomView.frame = frame
 
     }
 
@@ -91,30 +73,29 @@ public extension DrawerController {
             return
         }
 
+        let progress = self.progress(forTranslation: translation)
+
         isDraggingBottomView = false
-
-        let closedFrame = bottomViewClosedFrame
-        let openedFrame = bottomViewOpenedFrame
-
-        let minY = openedFrame.origin.y
-        let maxY = closedFrame.origin.y
-
-        var newY = draggingOrigin.y + translation.y
-        newY = min(maxY, newY)
-        newY = max(minY, newY)
-
-        let progress = newY / (maxY - minY)
 
         if progress > throwPercentageThresfold || abs(velocity.y) > throwVelocityThreshold {
             isBottomViewOpen = !isBottomViewOpen
         }
 
-        let frame = isBottomViewOpen ? bottomViewOpenedFrame : bottomViewClosedFrame
+        var frame = isBottomViewOpen ? bottomViewOpenedFrame : bottomViewClosedFrame
 
-        UIView.animate(withDuration: 0.25) {
-            bottomView.frame = frame
-        }
+        let distance = draggingOrigin.y - bottomView.frame.origin.y
+        let springVelocity = max(1 / (abs(velocity.y / distance)), 0.08)
 
+        delegate?.drawerController?(self, willEndDraggingDrawer: bottomView, withVelocity: springVelocity, targetFrame: &frame)
+
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: springVelocity,
+                       options: [.curveLinear],
+                       animations: {
+                           bottomView.frame = frame
+                       }, completion: nil)
     }
 }
 
