@@ -51,7 +51,7 @@ open class DrawerController: UIViewController {
 
     // MARK: - Delegate
 
-    weak var delegate: DrawerControllerDelegate?
+    public weak var delegate: DrawerControllerDelegate?
 
     // MARK: - Drag
 

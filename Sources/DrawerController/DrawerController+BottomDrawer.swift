@@ -16,17 +16,25 @@ public extension DrawerController {
     }
 
     var bottomViewClosedFrame: CGRect {
-        guard let view = bottomView else {
+        guard let viewController = bottomViewController else {
             return .zero
         }
-        return delegate?.drawerController?(self, closedFrameForDrawer: view) ?? self.view.bounds.applying(CGAffineTransform(translationX: 0.0, y: self.view.bounds.height))
+        return delegate?.drawerController?(self, bottomViewClosedFrame: viewController) ?? defaultBottomViewClosedFrame
+    }
+
+    fileprivate var defaultBottomViewClosedFrame: CGRect {
+        return self.view.bounds.applying(CGAffineTransform(translationX: 0.0, y: self.view.bounds.height))
     }
 
     var bottomViewOpenedFrame: CGRect {
-        guard let view = bottomView else {
+        guard let viewController = bottomViewController else {
             return .zero
         }
-        return delegate?.drawerController?(self, openedFrameForDrawer: view) ?? self.view.bounds
+        return delegate?.drawerController?(self, bottomViewOpenedFrame: viewController) ?? defaultBottomViewOpenedFrame
+    }
+
+    fileprivate var defaultBottomViewOpenedFrame: CGRect {
+        return self.view.bounds
     }
 
     func replace(bottom oldView: UIView?, by newView: UIView?) {

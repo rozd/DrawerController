@@ -13,22 +13,14 @@ import UIKit
 public protocol DrawerControllerDelegate: class {
 
     @objc
-    optional func drawerController(_ controller: DrawerController, closedPositionForDrawer drawer: UIView) -> CGPoint
-
-    @objc
-    optional func drawerController(_ controller: DrawerController, openedPositionForDrawer drawer: UIView) -> CGPoint
-
-    @objc
-    optional func drawerController(_ controller: DrawerController, closedFrameForDrawer drawer: UIView) -> CGRect
-
-    @objc
-    optional func drawerController(_ controller: DrawerController, openedFrameForDrawer drawer: UIView) -> CGRect
-
-    @objc
     optional func drawerController(_ controller: DrawerController, willEndDraggingDrawer drawer: UIView, withVelocity velocity: CGFloat, targetFrame frame: UnsafeMutablePointer<CGRect>)
 
-//    @objc
-//    optional func drawerController(_ controller: DrawerController, finalPosition sides: [UIRectEdge: CGFloat])
+    @objc
+    optional func drawerController(_ controller: DrawerController, bottomViewClosedFrame drawer: UIViewController?) -> CGRect
+
+    @objc
+    optional func drawerController(_ controller: DrawerController, bottomViewOpenedFrame drawer: UIViewController?) -> CGRect
+
 }
 
 #endif
