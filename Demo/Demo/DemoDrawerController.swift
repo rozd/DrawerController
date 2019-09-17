@@ -12,9 +12,9 @@ import DrawerController
 class DemoDrawerController: DrawerController {
 
     override func viewDidLoad() {
-        self.delegate = self
-
         super.viewDidLoad()
+
+        self.delegate = self
     }
 }
 

@@ -51,7 +51,11 @@ open class DrawerController: UIViewController {
 
     // MARK: - Delegate
 
-    public weak var delegate: DrawerControllerDelegate?
+    public weak var delegate: DrawerControllerDelegate? {
+        didSet {
+            bottomView?.frame = bottomViewCurrentFrame
+        }
+    }
 
     // MARK: - Drag
 

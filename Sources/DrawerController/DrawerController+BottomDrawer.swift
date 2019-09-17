@@ -19,6 +19,8 @@ public extension DrawerController {
         return !isBottomViewOpen
     }
 
+    // MARK: Replace view
+
     var bottomViewClosedFrame: CGRect {
         guard let viewController = bottomViewController else {
             return .zero
@@ -35,6 +37,31 @@ public extension DrawerController {
             self.view.bounds
     }
 
+    var bottomViewCurrentFrame: CGRect {
+        if isBottomViewOpen {
+            return bottomViewOpenedFrame
+        } else {
+            return bottomViewClosedFrame
+        }
+    }
+
+    func replace(bottom oldViewController: UIViewController?, by newViewController: UIViewController?) {
+        oldViewController?.view?.removeFromSuperview()
+        oldViewController?.removeFromParent()
+        oldViewController?.view?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        guard let newViewController = newViewController else {
+            return
+        }
+        newViewController.willMove(toParent: self)
+        newViewController.view.frame = oldViewController?.view.frame ?? bottomViewCurrentFrame
+        newViewController.view.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        view.addSubview(newViewController.view)
+        addChild(newViewController)
+        newViewController.didMove(toParent: self)
+    }
+
+    // MARK: Dragging
+
     var bottomViewMinDraggingPosition: CGFloat {
         guard let vc = bottomViewController else {
             return .zero
@@ -47,21 +74,6 @@ public extension DrawerController {
             return .zero
         }
         return delegate?.drawerController?(self, maxDraggingPositionForBottomDrawer: vc) ?? view.bounds.height
-    }
-
-    func replace(bottom oldViewController: UIViewController?, by newViewController: UIViewController?) {
-        oldViewController?.view?.removeFromSuperview()
-        oldViewController?.removeFromParent()
-        oldViewController?.view?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        guard let newViewController = newViewController else {
-            return
-        }
-        newViewController.willMove(toParent: self)
-        newViewController.view.frame = oldViewController?.view.frame ?? bottomViewClosedFrame
-        newViewController.view.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        view.addSubview(newViewController.view)
-        addChild(newViewController)
-        newViewController.didMove(toParent: self)
     }
 
     func beginBottomDragging(location: CGPoint, translation: CGPoint, velocity: CGPoint) {
