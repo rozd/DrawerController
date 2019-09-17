@@ -51,11 +51,7 @@ open class DrawerController: UIViewController {
 
     // MARK: - Delegate
 
-    public weak var delegate: DrawerControllerDelegate? {
-        didSet {
-            bottomView?.frame = bottomViewCurrentFrame
-        }
-    }
+    public weak var delegate: DrawerControllerDelegate?
 
     // MARK: - Drag
 
@@ -87,6 +83,11 @@ open class DrawerController: UIViewController {
         enableDragging()
     }
 
+    // MARK: - Layout
+
+    open func updateDrawersFrames() {
+        bottomView?.frame = bottomViewCurrentFrame
+    }
 
     // MARK: - Actions
 

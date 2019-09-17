@@ -15,6 +15,8 @@ class DemoDrawerController: DrawerController {
         super.viewDidLoad()
 
         self.delegate = self
+
+        self.updateDrawersFrames()
     }
 }
 
