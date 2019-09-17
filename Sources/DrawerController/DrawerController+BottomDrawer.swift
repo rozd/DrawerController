@@ -15,45 +15,61 @@ public extension DrawerController {
         return bottomViewController?.view
     }
 
+    var isBottomViewClose: Bool {
+        return !isBottomViewOpen
+    }
+
     var bottomViewClosedFrame: CGRect {
         guard let viewController = bottomViewController else {
             return .zero
         }
-        return delegate?.drawerController?(self, bottomViewClosedFrame: viewController) ?? defaultBottomViewClosedFrame
-    }
-
-    fileprivate var defaultBottomViewClosedFrame: CGRect {
-        return self.view.bounds.applying(CGAffineTransform(translationX: 0.0, y: self.view.bounds.height))
+        return delegate?.drawerController?(self, closedFrameForBottomDrawer: viewController) ??
+            self.view.bounds.applying(CGAffineTransform(translationX: 0.0, y: self.view.bounds.height))
     }
 
     var bottomViewOpenedFrame: CGRect {
         guard let viewController = bottomViewController else {
             return .zero
         }
-        return delegate?.drawerController?(self, bottomViewOpenedFrame: viewController) ?? defaultBottomViewOpenedFrame
+        return delegate?.drawerController?(self, openedFrameForBottomDrawer: viewController) ??
+            self.view.bounds
     }
 
-    fileprivate var defaultBottomViewOpenedFrame: CGRect {
-        return self.view.bounds
+    var bottomViewMinDraggingPosition: CGFloat {
+        guard let vc = bottomViewController else {
+            return .zero
+        }
+        return delegate?.drawerController?(self, minDraggingPositionForBottomDrawer: vc) ?? .zero
     }
 
-    func replace(bottom oldView: UIView?, by newView: UIView?) {
-        oldView?.removeFromSuperview()
-        oldView?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        guard let newView = newView else {
+    var bottomViewMaxDraggingPosition: CGFloat {
+        guard let vc = bottomViewController else {
+            return .zero
+        }
+        return delegate?.drawerController?(self, maxDraggingPositionForBottomDrawer: vc) ?? view.bounds.height
+    }
+
+    func replace(bottom oldViewController: UIViewController?, by newViewController: UIViewController?) {
+        oldViewController?.view?.removeFromSuperview()
+        oldViewController?.removeFromParent()
+        oldViewController?.view?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        guard let newViewController = newViewController else {
             return
         }
-        newView.frame = oldView?.frame ?? bottomViewClosedFrame
-        newView.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        view.addSubview(newView)
+        newViewController.willMove(toParent: self)
+        newViewController.view.frame = oldViewController?.view.frame ?? bottomViewClosedFrame
+        newViewController.view.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        view.addSubview(newViewController.view)
+        addChild(newViewController)
+        newViewController.didMove(toParent: self)
     }
 
-    func beginBottomDragging(translation: CGPoint, velocity: CGPoint) {
-        guard let bottomView = bottomView else {
+    func beginBottomDragging(location: CGPoint, translation: CGPoint, velocity: CGPoint) {
+        guard bottomView != nil else {
             return
         }
 
-        draggingOrigin = bottomView.frame.origin
+        draggingOrigin = location
 
         isDraggingBottomView = true
     }
@@ -101,7 +117,7 @@ public extension DrawerController {
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 1.0,
-                       initialSpringVelocity: springVelocity,
+                       initialSpringVelocity: 1.0,
                        options: [.curveLinear],
                        animations: {
                            bottomView.frame = frame

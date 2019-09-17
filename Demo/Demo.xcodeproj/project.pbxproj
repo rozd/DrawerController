@@ -14,6 +14,7 @@
 		507264072326C04500BCF446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 507264062326C04500BCF446 /* Assets.xcassets */; };
 		5072640A2326C04500BCF446 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 507264082326C04500BCF446 /* LaunchScreen.storyboard */; };
 		507264132326C0B000BCF446 /* DrawerController in Frameworks */ = {isa = PBXBuildFile; productRef = 507264122326C0B000BCF446 /* DrawerController */; };
+		50B0D4B623294D080068FFB0 /* DemoDrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50B0D4B523294D080068FFB0 /* DemoDrawerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		507264062326C04500BCF446 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		507264092326C04500BCF446 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5072640B2326C04500BCF446 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50B0D4B523294D080068FFB0 /* DemoDrawerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDrawerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				507264062326C04500BCF446 /* Assets.xcassets */,
 				507264082326C04500BCF446 /* LaunchScreen.storyboard */,
 				5072640B2326C04500BCF446 /* Info.plist */,
+				50B0D4B523294D080068FFB0 /* DemoDrawerController.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 				507264022326C04200BCF446 /* ViewController.swift in Sources */,
 				507263FE2326C04200BCF446 /* AppDelegate.swift in Sources */,
 				507264002326C04200BCF446 /* SceneDelegate.swift in Sources */,
+				50B0D4B623294D080068FFB0 /* DemoDrawerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

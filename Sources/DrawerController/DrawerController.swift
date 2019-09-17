@@ -16,7 +16,7 @@ open class DrawerController: UIViewController {
 
     open var bottomViewController: UIViewController? {
         didSet {
-            replace(bottom: oldValue?.view, by: bottomViewController?.view)
+            replace(bottom: oldValue, by: bottomViewController)
             setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
         }
     }
@@ -93,10 +93,11 @@ open class DrawerController: UIViewController {
 
         let translation = recognizer.translation(in: self.view)
         let velocity    = recognizer.velocity(in: self.view)
+        let location    = recognizer.location(in: self.view)
 
         switch recognizer.state {
         case .began:
-            beginBottomDragging(translation: translation, velocity: velocity)
+            beginBottomDragging(location: location, translation: translation, velocity: velocity)
             break
         case .changed:
             continueBottomDragging(translation: translation, velocity: velocity)

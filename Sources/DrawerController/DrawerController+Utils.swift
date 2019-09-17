@@ -13,20 +13,15 @@ public extension DrawerController {
 
     func progress(forTranslation translation: CGPoint) -> CGFloat {
         if isDraggingBottomView {
-
-            let minY = bottomViewOpenedFrame.origin.y
-            let maxY = bottomViewClosedFrame.origin.y
-
-            var newY = draggingOrigin.y + translation.y
-            newY = min(maxY, newY)
-            newY = max(minY, newY)
-
-            var progress = newY / (maxY - minY)
-            if !isBottomViewOpen {
-                progress = 1 - progress
+            guard (translation.y < 0.0 && isBottomViewClose) || (translation.y > 0.0 && isBottomViewOpen) else {
+                return .zero
             }
 
-            return progress
+            let newY = translation.y
+            let minY = bottomViewMinDraggingPosition
+            let maxY = bottomViewMaxDraggingPosition
+
+            return abs(newY / (maxY - minY))
         }
         return .zero
     }
