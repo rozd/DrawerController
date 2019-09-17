@@ -31,7 +31,11 @@ open class DrawerController: UIViewController {
 
     // MARK: - Open / Close
 
-    open var isBottomViewOpen: Bool = false
+    open var isBottomViewOpen: Bool = false {
+        didSet {
+            updateBottomDrawerFrame()
+        }
+    }
 
     // MARK: - Gesture Recognizers
 
@@ -86,7 +90,7 @@ open class DrawerController: UIViewController {
     // MARK: - Layout
 
     open func updateDrawersFrames() {
-        bottomView?.frame = bottomViewCurrentFrame
+        updateBottomDrawerFrame()
     }
 
     // MARK: - Actions

@@ -27,6 +27,9 @@ class ViewController: UIViewController {
         ])
     }
 
+    @IBAction func openBottomDrawerButtonTapped(_ sender: Any) {
+        self.drawerController?.openBottomViewController(animated: true)
+    }
 
 }
 

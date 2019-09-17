@@ -35,9 +35,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nku-Zv-6EI">
-                                <rect key="frame" x="136.5" y="419.5" width="141" height="33"/>
+                                <rect key="frame" x="126.5" y="419.5" width="161" height="33"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <state key="normal" title="Storyboard Button"/>
+                                <state key="normal" title="Open Bottom Drawer"/>
+                                <connections>
+                                    <action selector="openBottomDrawerButtonTapped:" destination="Qou-l7-d7J" eventType="touchUpInside" id="txj-ay-nyw"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -59,7 +62,7 @@
                     <view key="view" contentMode="scaleToFill" id="koC-4y-apc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="mK6-4n-dHT"/>
                     </view>
                 </viewController>

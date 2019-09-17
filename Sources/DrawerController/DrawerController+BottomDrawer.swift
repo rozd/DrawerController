@@ -21,6 +21,55 @@ public extension DrawerController {
 
     // MARK: Replace view
 
+    func replace(bottom oldViewController: UIViewController?, by newViewController: UIViewController?) {
+        oldViewController?.view?.removeFromSuperview()
+        oldViewController?.removeFromParent()
+        oldViewController?.view?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        guard let newViewController = newViewController else {
+            return
+        }
+        newViewController.willMove(toParent: self)
+        newViewController.view.frame = oldViewController?.view.frame ?? bottomViewCurrentFrame
+        newViewController.view.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
+        view.addSubview(newViewController.view)
+        addChild(newViewController)
+        newViewController.didMove(toParent: self)
+    }
+
+    // MARK: Open / Close
+
+    func openBottomViewController(animated: Bool, completion: ((Bool) -> ())? = nil) {
+        guard isBottomViewClose else {
+            completion?(true)
+            return
+        }
+
+        let duration = animated ? 0.337 : 0.0
+
+        let animations = { [unowned self] in
+            self.isBottomViewOpen = true
+        }
+
+        UIView.animate(withDuration: duration, animations: animations, completion: completion)
+    }
+
+    func closeBottomViewController(animated: Bool, completion: ((Bool) -> ())? = nil) {
+        guard isBottomViewOpen else {
+            completion?(true)
+            return
+        }
+
+        let duration = animated ? 0.337 : 0.0
+
+        let animations = { [unowned self] in
+            self.isBottomViewOpen = false
+        }
+
+        UIView.animate(withDuration: duration, animations: animations, completion: completion)
+    }
+
+    // MARK: Update Frame
+
     var bottomViewClosedFrame: CGRect {
         guard let viewController = bottomViewController else {
             return .zero
@@ -45,19 +94,8 @@ public extension DrawerController {
         }
     }
 
-    func replace(bottom oldViewController: UIViewController?, by newViewController: UIViewController?) {
-        oldViewController?.view?.removeFromSuperview()
-        oldViewController?.removeFromParent()
-        oldViewController?.view?.removeGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        guard let newViewController = newViewController else {
-            return
-        }
-        newViewController.willMove(toParent: self)
-        newViewController.view.frame = oldViewController?.view.frame ?? bottomViewCurrentFrame
-        newViewController.view.addGestureRecognizer(closeBottomDrawerGestureRecognizer)
-        view.addSubview(newViewController.view)
-        addChild(newViewController)
-        newViewController.didMove(toParent: self)
+    func updateBottomDrawerFrame() {
+        bottomView?.frame = bottomViewCurrentFrame
     }
 
     // MARK: Dragging
@@ -115,25 +153,35 @@ public extension DrawerController {
 
         let velocity = velocity.y * (isBottomViewOpen ? 1.0 : -1.0)
 
-        if progress > throwPercentageThresfold || velocity > throwVelocityThreshold {
-            isBottomViewOpen = !isBottomViewOpen
-        }
-
-        var frame = isBottomViewOpen ? bottomViewOpenedFrame : bottomViewClosedFrame
-
         let distance = draggingOrigin.y - bottomView.frame.origin.y
         let springVelocity = max(1 / (abs(velocity / distance)), 0.08)
 
-        delegate?.drawerController?(self, willEndDraggingDrawer: bottomView, withVelocity: springVelocity, targetFrame: &frame)
 
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 1.0,
-                       initialSpringVelocity: 1.0,
-                       options: [.curveLinear],
-                       animations: {
-                           bottomView.frame = frame
-                       }, completion: nil)
+        let accomplishAnimations = { [unowned self] in
+            self.isBottomViewOpen = !self.isBottomViewOpen
+        }
+
+        let springBackAnimations = { [unowned self] in
+            bottomView.frame = self.bottomViewCurrentFrame
+        }
+
+        if progress > throwPercentageThresfold || velocity > throwVelocityThreshold {
+            UIView.animate(withDuration: 0.337,
+                           delay: 0.0,
+                           usingSpringWithDamping: 1.0,
+                           initialSpringVelocity: springVelocity,
+                           options: [.curveLinear],
+                           animations: accomplishAnimations,
+                           completion: nil)
+        } else {
+            UIView.animate(withDuration: 0.5,
+                           delay: 0.0,
+                           usingSpringWithDamping: 1.0,
+                           initialSpringVelocity: springVelocity,
+                           options: [.curveLinear],
+                           animations: springBackAnimations,
+                           completion: nil)
+        }
     }
 }
 
